@@ -1,12 +1,11 @@
-// src/services/authService.js
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_URL = 'https://apoyo-mental-api.onrender.com';
 
 class AuthService {
   async register(userData) {
     try {
-      const response = await axios.post(`${API_URL}/auth/register`, {
+      const response = await axios.post(`${API_URL}/register`, {
         email: userData.email,
         username: userData.username,
         full_name: userData.fullName,
@@ -26,19 +25,19 @@ class AuthService {
       formData.append('username', username);
       formData.append('password', password);
       
-      const response = await axios.post(`${API_URL}/auth/login`, formData);
+      const response = await axios.post(`${API_URL}/login`, formData);
       
       console.log('Login response:', response.data);
       
       if (response.data.access_token) {
         localStorage.setItem('token', response.data.access_token);
         localStorage.setItem('username', username);
-        console.log('Token guardado:', response.data.access_token);
+        console.log('Token guardado correctamente');
         return true;
       }
       return false;
     } catch (error) {
-      console.error('Error en login:', error.response?.data);
+      console.error('Error en login:', error.response?.data || error.message);
       throw error.response?.data || { detail: 'Error en el login' };
     }
   }
@@ -50,15 +49,11 @@ class AuthService {
   }
 
   getToken() {
-    const token = localStorage.getItem('token');
-    console.log('Token actual:', token ? 'Existe' : 'No existe');
-    return token;
+    return localStorage.getItem('token');
   }
 
   isAuthenticated() {
-    const isAuth = !!this.getToken();
-    console.log('Usuario autenticado:', isAuth);
-    return isAuth;
+    return !!this.getToken();
   }
 
   getUsername() {
