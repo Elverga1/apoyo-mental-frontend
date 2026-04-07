@@ -1,8 +1,9 @@
 // src/services/apiService.js
+const API_URL = 'https://apoyo-mental-api.onrender.com';
 
 class ApiService {
-  constructor(baseUrl = 'http://localhost:8000') {
-    this.baseUrl = baseUrl;
+  constructor() {
+    this.baseUrl = API_URL;
   }
 
   async analyzeRisk(text) {
@@ -27,6 +28,15 @@ class ApiService {
   }
 
   async getLinesOfHelp() {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/lines-of-help`);
+      if (response.ok) {
+        return await response.json();
+      }
+    } catch (error) {
+      console.error('Error obteniendo líneas de ayuda:', error);
+    }
+    
     return [
       { name: 'Línea de la Vida', number: '800 911 2000', description: 'Atención las 24 horas' },
       { name: 'SAPTEL', number: '55 5259 8121', description: 'Apoyo psicológico por teléfono' },
