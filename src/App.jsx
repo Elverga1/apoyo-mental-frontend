@@ -1,6 +1,6 @@
 // src/App.jsx
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { Home } from './pages/Home';
 import { ChatPage } from './pages/ChatPage';
@@ -12,15 +12,13 @@ import authService from './services/authService';
 import './index.css';
 
 const PrivateRoute = ({ children }) => {
-  const isAuth = authService.isAuthenticated();
-  console.log('PrivateRoute - Autenticado:', isAuth);
-  return isAuth ? children : <Navigate to="/login" />;
+  return authService.isAuthenticated() ? children : <Navigate to="/login" />;
 };
 
 function App() {
   return (
     <ThemeProvider>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={
@@ -65,7 +63,7 @@ function App() {
             </PrivateRoute>
           } />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </ThemeProvider>
   );
 }
