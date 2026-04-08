@@ -1,5 +1,7 @@
+// src/services/authService.js
 import axios from 'axios';
 
+// Usar directamente la URL de producción en Render
 const API_URL = 'https://apoyo-mental-api.onrender.com';
 
 class AuthService {
