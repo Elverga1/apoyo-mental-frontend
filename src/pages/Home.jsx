@@ -56,7 +56,7 @@ export const Home = () => {
           <button
             onClick={() => {
               authService.logout();
-              window.location.href = '/login';
+              window.location.href = '/#/login';
             }}
             className="p-2 rounded-full bg-red-500/20 text-red-600 hover:bg-red-500/30 transition-colors ml-2"
           >
