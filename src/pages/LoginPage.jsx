@@ -36,7 +36,7 @@ export const LoginPage = () => {
     if (success) {
       console.log('Redirigiendo a /');
       // Forzar recarga en lugar de navigate
-      window.location.href = '/';
+      window.location.href = '/#/';
     } else {
       setError('Usuario o contraseña incorrectos');
     }
@@ -79,7 +79,7 @@ export const LoginPage = () => {
     
     console.log('Redirigiendo a /');
     // Forzar recarga en lugar de navigate
-    window.location.href = '/';
+    window.location.href = '/#/';
   } catch (err) {
     console.error('Error en registro:', err);
     setError('Error en el registro. Usuario o email ya existen.');
