@@ -22,31 +22,33 @@ export const LoginPage = () => {
       navigate('/');
     }
   }, [navigate]);
-
-  const handleLogin = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  setError('');
   
-  try {
-    console.log('Intentando login con:', username);
-    const success = await authService.login(username, password);
-    console.log('Login exitoso:', success);
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
     
-    if (success) {
-      console.log('Redirigiendo a /');
-      // Forzar recarga en lugar de navigate
-      window.location.href = '/#/';
-    } else {
-      setError('Usuario o contraseña incorrectos');
+    try {
+      console.log('Intentando login con:', username);
+      const success = await authService.login(username, password);
+      console.log('Login exitoso:', success);
+      
+      if (success) {
+        console.log('Redirigiendo en 500ms...');
+        // Esperar medio segundo antes de redirigir
+        setTimeout(() => {
+          window.location.href = '/#/';
+        }, 500);
+      } else {
+        setError('Usuario o contraseña incorrectos');
+      }
+    } catch (err) {
+      console.error('Error en login:', err);
+      setError(err.detail || 'Error al iniciar sesión');
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    console.error('Error en login:', err);
-    setError('Usuario o contraseña incorrectos');
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const handleRegister = async (e) => {
   e.preventDefault();
