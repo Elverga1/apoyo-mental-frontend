@@ -77,14 +77,19 @@ export const LoginPage = () => {
     });
     
     console.log('Registro exitoso, iniciando sesión...');
-    await authService.login(username, password);
+    const success = await authService.login(username, password);
     
-    console.log('Redirigiendo a /');
-    // Forzar recarga en lugar de navigate
-    window.location.href = '/#/';
+    if (success) {
+      console.log('Redirigiendo en 500ms...');
+      setTimeout(() => {
+        window.location.href = '/#/';
+      }, 500);
+    } else {
+      setError('Error al iniciar sesión después del registro');
+    }
   } catch (err) {
     console.error('Error en registro:', err);
-    setError('Error en el registro. Usuario o email ya existen.');
+    setError(err.detail || 'Error en el registro. Usuario o email ya existen.');
   } finally {
     setLoading(false);
   }
