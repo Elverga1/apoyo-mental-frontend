@@ -22,27 +22,33 @@ class AuthService {
   }
 
   async login(username, password) {
-    try {
-      const formData = new FormData();
-      formData.append('username', username);
-      formData.append('password', password);
+  try {
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('password', password);
+    
+    const response = await axios.post(`${API_URL}/login`, formData);
+    
+    console.log('Login response:', response.data);
+    
+    if (response.data.access_token) {
+      // Guardar token y username
+      localStorage.setItem('token', response.data.access_token);
+      localStorage.setItem('username', username);
       
-      const response = await axios.post(`${API_URL}/login`, formData);
+      // Verificar que se guardó correctamente
+      const tokenSaved = localStorage.getItem('token');
+      console.log('Token guardado:', tokenSaved ? 'Sí' : 'No');
+      console.log('Username guardado:', localStorage.getItem('username'));
       
-      console.log('Login response:', response.data);
-      
-      if (response.data.access_token) {
-        localStorage.setItem('token', response.data.access_token);
-        localStorage.setItem('username', username);
-        console.log('Token guardado correctamente');
-        return true;
-      }
-      return false;
-    } catch (error) {
-      console.error('Error en login:', error.response?.data || error.message);
-      throw error.response?.data || { detail: 'Error en el login' };
+      return true;
     }
+    return false;
+  } catch (error) {
+    console.error('Error en login:', error.response?.data || error.message);
+    throw error.response?.data || { detail: 'Error en el login' };
   }
+}
 
   logout() {
     localStorage.removeItem('token');
