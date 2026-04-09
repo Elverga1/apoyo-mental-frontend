@@ -41,11 +41,20 @@ const handleLogin = async (e) => {
     console.log('Login exitoso:', success);
     
     if (success) {
-      const delay = getRedirectDelay();
-      console.log(`Redirigiendo en ${delay}ms... (${isMobile() ? 'móvil' : 'escritorio'})`);
-      setTimeout(() => {
-        window.location.href = '/#/';
-      }, delay);
+      // Verificar que el token existe antes de redirigir
+      const token = localStorage.getItem('token');
+      console.log('Verificando token antes de redirigir:', token ? 'Token existe' : 'No hay token');
+      
+      if (token) {
+        console.log('Token válido, redirigiendo...');
+        // Usar navigate en lugar de window.location para mejor integración
+        setTimeout(() => {
+          navigate('/');
+        }, 500);
+      } else {
+        console.error('Token no encontrado después del login');
+        setError('Error al guardar la sesión. Intenta nuevamente.');
+      }
     } else {
       setError('Usuario o contraseña incorrectos');
     }
