@@ -28,8 +28,7 @@ const isMobile = () => {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 };
 
-// Tiempo de espera: 500ms para escritorio, 1500ms para móvil
-const getRedirectDelay = () => isMobile() ? 1500 : 500;
+const getRedirectDelay = () => isMobile() ? 1500 : 1000;
 
 const handleLogin = async (e) => {
   e.preventDefault();
