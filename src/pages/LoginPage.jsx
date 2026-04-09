@@ -23,34 +23,42 @@ export const LoginPage = () => {
     }
   }, [navigate]);
   
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    
-    try {
-      console.log('Intentando login con:', username);
-      const success = await authService.login(username, password);
-      console.log('Login exitoso:', success);
-      
-      if (success) {
-        console.log('Redirigiendo en 500ms...');
-        // Esperar medio segundo antes de redirigir
-        setTimeout(() => {
-          window.location.href = '/#/';
-        }, 500);
-      } else {
-        setError('Usuario o contraseña incorrectos');
-      }
-    } catch (err) {
-      console.error('Error en login:', err);
-      setError(err.detail || 'Error al iniciar sesión');
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Detectar si es dispositivo móvil
+const isMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
 
-  const handleRegister = async (e) => {
+// Tiempo de espera: 500ms para escritorio, 1500ms para móvil
+const getRedirectDelay = () => isMobile() ? 1500 : 500;
+
+const handleLogin = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError('');
+  
+  try {
+    console.log('Intentando login con:', username);
+    const success = await authService.login(username, password);
+    console.log('Login exitoso:', success);
+    
+    if (success) {
+      const delay = getRedirectDelay();
+      console.log(`Redirigiendo en ${delay}ms... (${isMobile() ? 'móvil' : 'escritorio'})`);
+      setTimeout(() => {
+        window.location.href = '/#/';
+      }, delay);
+    } else {
+      setError('Usuario o contraseña incorrectos');
+    }
+  } catch (err) {
+    console.error('Error en login:', err);
+    setError(err.detail || 'Error al iniciar sesión');
+  } finally {
+    setLoading(false);
+  }
+};
+
+const handleRegister = async (e) => {
   e.preventDefault();
   setLoading(true);
   setError('');
@@ -80,10 +88,11 @@ export const LoginPage = () => {
     const success = await authService.login(username, password);
     
     if (success) {
-      console.log('Redirigiendo en 500ms...');
+      const delay = getRedirectDelay();
+      console.log(`Redirigiendo en ${delay}ms... (${isMobile() ? 'móvil' : 'escritorio'})`);
       setTimeout(() => {
         window.location.href = '/#/';
-      }, 500);
+      }, delay);
     } else {
       setError('Error al iniciar sesión después del registro');
     }
