@@ -12,9 +12,11 @@ import authService from './services/authService';
 import './index.css';
 
 const PrivateRoute = ({ children }) => {
-  return authService.isAuthenticated() ? children : <Navigate to="/login" />;
+  const isAuth = authService.isAuthenticated();
+  console.log('PrivateRoute - Autenticado:', isAuth);
+  console.log('Token actual:', authService.getToken());
+  return isAuth ? children : <Navigate to="/login" />;
 };
-
 function App() {
   return (
     <ThemeProvider>
