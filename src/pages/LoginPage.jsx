@@ -49,7 +49,7 @@ const handleLogin = async (e) => {
         console.log('Redirigiendo en 1000ms...');
         setTimeout(() => {
           window.location.href = '/#/';
-        }, 1000);
+        }, 2000);
       } else {
         setError('Error al guardar la sesión');
       }
@@ -89,7 +89,7 @@ const handleRegister = async (e) => {
       console.log('Redirigiendo en 1000ms...');
       setTimeout(() => {
         window.location.href = '/#/';
-      }, 1000);
+      }, 2000);
     } else {
       setError('Error al iniciar sesión');
     }
