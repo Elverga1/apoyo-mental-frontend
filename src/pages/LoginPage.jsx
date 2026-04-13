@@ -43,24 +43,22 @@ const handleLogin = async (e) => {
     if (success) {
       // Verificar que el token existe antes de redirigir
       const token = localStorage.getItem('token');
-      console.log('Verificando token antes de redirigir:', token ? 'Token existe' : 'No hay token');
+      console.log('Token existe:', !!token);
       
       if (token) {
-        console.log('Token válido, redirigiendo...');
-        // Usar navigate en lugar de window.location para mejor integración
+        console.log('Redirigiendo en 1000ms...');
         setTimeout(() => {
-          navigate('/');
-        }, 500);
+          window.location.href = '/#/';
+        }, 1000);
       } else {
-        console.error('Token no encontrado después del login');
-        setError('Error al guardar la sesión. Intenta nuevamente.');
+        setError('Error al guardar la sesión');
       }
     } else {
       setError('Usuario o contraseña incorrectos');
     }
   } catch (err) {
     console.error('Error en login:', err);
-    setError(err.detail || 'Error al iniciar sesión');
+    setError('Error al iniciar sesión');
   } finally {
     setLoading(false);
   }
@@ -77,14 +75,7 @@ const handleRegister = async (e) => {
     return;
   }
   
-  if (password.length < 4) {
-    setError('La contraseña debe tener al menos 4 caracteres');
-    setLoading(false);
-    return;
-  }
-  
   try {
-    console.log('Intentando registrar:', username);
     await authService.register({
       username: username,
       email: email,
@@ -92,21 +83,18 @@ const handleRegister = async (e) => {
       password: password
     });
     
-    console.log('Registro exitoso, iniciando sesión...');
     const success = await authService.login(username, password);
     
     if (success) {
-      const delay = getRedirectDelay();
-      console.log(`Redirigiendo en ${delay}ms... (${isMobile() ? 'móvil' : 'escritorio'})`);
+      console.log('Redirigiendo en 1000ms...');
       setTimeout(() => {
         window.location.href = '/#/';
-      }, delay);
+      }, 1000);
     } else {
-      setError('Error al iniciar sesión después del registro');
+      setError('Error al iniciar sesión');
     }
   } catch (err) {
-    console.error('Error en registro:', err);
-    setError(err.detail || 'Error en el registro. Usuario o email ya existen.');
+    setError(err.detail || 'Error en el registro');
   } finally {
     setLoading(false);
   }
