@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // Usar directamente la URL de producción en Render
-const API_URL = 'https://apoyo-mental-api.onrender.com';
+const API_URL = 'https://apoyo-mental-api-1.onrender.com';
 
 class AuthService {
   async register(userData) {
