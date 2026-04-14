@@ -1,5 +1,5 @@
 // src/services/apiService.js
-const API_URL = 'https://apoyo-mental-api.onrender.com';
+const API_URL = 'https://apoyo-mental-api-1.onrender.com';
 
 class ApiService {
   constructor() {
